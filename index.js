@@ -17,12 +17,16 @@ const HomeRouter = require("./routes/home.router")
 const AuthRouter = require("./routes/auth.router")
 const AddressRouter = require("./routes/address.router")
 const CategoryRouter = require("./routes/category.router")
+const UserRouter = require("./routes/user.router")
+const ContactRouter = require("./routes/contact.router")
 
 
 app.use("/api/v1/home", HomeRouter);
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/address", AddressRouter);
 app.use("/api/v1/category", CategoryRouter);
+app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/contact", ContactRouter);
 
 
 app.listen(port, () => {

@@ -39,6 +39,18 @@ const Category = sequelize.define("category", {
     name_tm: { type: DataTypes.STRING, allowNull: false }
 });
 
+const Contact = sequelize.define("contact", {
+    id: {
+        type: DataTypes.INTEGER(10),
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
+    name: { type: DataTypes.STRING, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: true },
+    subject: { type: DataTypes.STRING, allowNull: false },
+    comment: { type: DataTypes.STRING, allowNull: false },
+});
 
 const Address = sequelize.define("address", {
     id: {
@@ -98,5 +110,6 @@ module.exports = {
     Admin,
     Address,
     User,
-    Category
+    Category,
+    Contact
 };
