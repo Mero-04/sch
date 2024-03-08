@@ -59,10 +59,10 @@ const Document = sequelize.define("document", {
         primaryKey: true,
         allowNull: false,
     },
-    name1: { type: DataTypes.STRING, allowNull: false },
-    surname1: { type: DataTypes.STRING, allowNull: true },
-    s: { type: DataTypes.STRING, allowNull: false },
-    comment: { type: DataTypes.STRING, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false },
+    passport_pdf: { type: DataTypes.STRING, allowNull: false },
+    checked: { type: DataTypes.TINYINT, allowNull: false, defaultValue: "0" },
 });
 
 const Address = sequelize.define("address", {
@@ -115,8 +115,13 @@ const Address = sequelize.define("address", {
     checked: { type: DataTypes.TINYINT, allowNull: false, defaultValue: "0" }
 });
 
-
 Admin.findOrCreate({ where: { email: "admin@gmail.com", password: "$2b$10$ppLSj03K./oeMqaDKYEpTehMP5/Nxp5JzmppDXbygn/ReZMhwBe5W", role: "Admin" } })
+
+Category.hasMany(Document, { onDelete: "cascade", onUpdate: "cascade" })
+Document.belongsTo(Category)
+
+User.hasMany(Document, { onDelete: "cascade", onUpdate: "cascade" })
+Document.belongsTo(User)
 
 
 module.exports = {

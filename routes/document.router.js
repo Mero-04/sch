@@ -1,42 +1,77 @@
 const express = require('express');
-const { isAdmin } = require('../middlewares/authMiddleware');
+const { isAdmin, validateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { Category } = require("../models/model");
-
+const { Category, Document } = require("../models/model");
+const FileUpload = require("../helpers/file-upload")
+const multer = require("multer");
+const upload = multer({ dest: "./public/img" });
+const path = require("path")
+const fs = require('fs')
 
 router.get("/", isAdmin, async (req, res) => {
+    await Document.findAll().then((document) => { res.json({ document: document }) })
+})
+
+/// Kategoryyalaryy cekmeli su api bilen
+
+router.get("/create", async (req, res) => {
     await Category.findAll().then((category) => { res.json({ category: category }) })
 })
 
-router.post("/create", isAdmin, async (req, res) => {
-    await Category.create({
-        name_tm: req.body.name_tm
+router.post("/create", FileUpload.upload.single("passport_pdf"), validateToken, async (req, res) => {
+    await Document.create({
+        title: req.body.title,
+        description: req.body.description,
+        passport_pdf: req.file.filename,
+        categoryId: req.body.categoryId,
+        userId: req.user.userId
     }).then(() => {
-        res.json({ success: "Kategoriya üstünlikli goşuldy" })
+        res.json({ success: "Hasaba alyndynyz" })
     }).catch((error) => { res.status(500).json({ error: error }) })
 });
 
-router.get("/edit/:categoryId", isAdmin, async (req, res) => {
-    await Category.findOne({ where: { id: req.params.categoryId } }).then((category) => {
-        res.json({ category: category })
+// adminda checkedi calysmaly
+
+router.get("/edit/:documentId", isAdmin, async (req, res) => {
+    await Document.findOne({ where: { id: req.params.documentId } }).then((document) => {
+        res.json({
+            document: document
+        })
     })
 });
 
-router.post("/edit/:categoryId", isAdmin, async (req, res) => {
-    await Category.update({
-        name_tm: req.body.name_tm
-    }, { where: { id: req.params.categoryId } })
+router.post("/edit/:documentId", isAdmin, async (req, res) => {
+    await Document.update({
+        checked: req.body.checked
+    }, { where: { id: req.params.documentId } })
         .then(() => { res.json({ success: "Üstünlikli üýtgedildi" }) })
         .catch((error) => { res.status(500).json({ error: error }) })
 });
 
-router.delete("/delete/:categoryId", isAdmin, async (req, res) => {
-    await Category.findOne({ where: { id: req.params.categoryId } }).then((category) => {
-        if (category) {
-            category.destroy()
+router.delete("/delete/:documentId", isAdmin, async (req, res) => {
+    await Document.findOne({ where: { id: req.params.documentId } }).then((document) => {
+        if (document) {
+            document.destroy()
             return res.json({ success: "Üstünlikli pozuldy" })
         } else { res.json({ error: "Tapylmady" }) }
     })
 });
+
+//egerde user oz document registrasiyasyny ayyrtmak islese
+
+router.delete("/user/delete/:documentId", validateToken, async (req, res) => {
+    await Document.findOne({
+        where: {
+            id: req.params.documentId,
+            userId: req.user.id
+        }
+    }).then((document) => {
+        if (document) {
+            document.destroy()
+            return res.json({ success: "Hasapdan cykdynyz" })
+        } else { res.json({ error: "Tapylmady" }) }
+    })
+});
+
 
 module.exports = router;
