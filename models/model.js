@@ -52,6 +52,19 @@ const Contact = sequelize.define("contact", {
     comment: { type: DataTypes.STRING, allowNull: false },
 });
 
+const Document = sequelize.define("document", {
+    id: {
+        type: DataTypes.INTEGER(10),
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
+    name1: { type: DataTypes.STRING, allowNull: false },
+    surname1: { type: DataTypes.STRING, allowNull: true },
+    s: { type: DataTypes.STRING, allowNull: false },
+    comment: { type: DataTypes.STRING, allowNull: false },
+});
+
 const Address = sequelize.define("address", {
     id: {
         type: DataTypes.INTEGER,
@@ -111,5 +124,6 @@ module.exports = {
     Address,
     User,
     Category,
-    Contact
+    Contact,
+    Document
 };

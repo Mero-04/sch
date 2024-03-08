@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
                     res.json({ error: "Ulanyjynyň nomeri ýa-da açar sözi nädogry" })
                 } else {
                     res.json({
-                        token: sign({ id: user.id, role: user.role }, process.env.JWT_key, {
+                        token: sign({ id: user.id, username: user.username, phone_num: user.phone_num, role: user.role, }, process.env.JWT_key, {
                             expiresIn: '24h'
                         })
                     });
@@ -63,7 +63,7 @@ router.post("/register", async (req, res) => {
             });
             res.json({
                 success: "Hasaba alyndy", token: sign(
-                    { phone_num: user.phone_num, id: user.id, role: user.role },process.env.JWT_key
+                    { id: user.id, username: user.username, phone_num: user.phone_num, role: user.role, }, process.env.JWT_key
                 )
             });
         }
@@ -76,7 +76,13 @@ router.post("/register", async (req, res) => {
 })
 
 router.get("/current_user", validateToken, async (req, res) => {
-    res.json(req.user)
+    // res.json(req.user)
+    await User.findOne({
+        attributes: { exclude: ['password'] },
+        where: { id: req.user.id }
+    }).then((user) => {
+        res.json({ user: user })
+    })
 });
 
 
