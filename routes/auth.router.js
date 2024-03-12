@@ -76,13 +76,7 @@ router.post("/register", async (req, res) => {
 })
 
 router.get("/current_user", validateToken, async (req, res) => {
-    // res.json(req.user)
-    await User.findOne({
-        attributes: { exclude: ['password'] },
-        where: { id: req.user.id }
-    }).then((user) => {
-        res.json({ user: user })
-    })
+    res.json(req.user)
 });
 
 

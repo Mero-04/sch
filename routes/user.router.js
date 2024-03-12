@@ -1,6 +1,6 @@
 const express = require("express");
 const { User } = require("../models/model");
-const { isAdmin } = require("../middlewares/authMiddleware");
+const { isAdmin, validateToken } = require("../middlewares/authMiddleware");
 const router = express.Router();
 const imageUpload = require("../helpers/file-upload")
 const multer = require("multer");
@@ -12,6 +12,15 @@ router.get("/", isAdmin, async (req, res) => {
     await User.findAll().then((users) => { res.json({ users: users }) })
 })
 
+
+router.get("/single", validateToken, async (req,res)=>{
+    await User.findOne({
+        attributes: { exclude: ['password'] },
+        where: { id: req.user.id }
+    }).then((user) => {
+        res.json({ user: user })
+    })
+})
 
 
 router.get("/edit/:userId", async (req, res) => {
