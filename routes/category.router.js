@@ -4,7 +4,7 @@ const router = express.Router();
 const { Category } = require("../models/model");
 
 
-router.get("/", isAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     await Category.findAll().then((category) => { res.json({ category: category }) })
 })
 

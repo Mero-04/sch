@@ -20,6 +20,8 @@ router.get("/create", async (req, res) => {
 
 router.post("/create", FileUpload.upload.single("passport_pdf"), validateToken, async (req, res) => {
     await Document.create({
+        username: req.body.username,
+        email: req.body.email,
         title: req.body.title,
         description: req.body.description,
         passport_pdf: req.file.filename,

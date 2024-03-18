@@ -13,6 +13,19 @@ const Admin = sequelize.define("admin", {
     role: { type: DataTypes.STRING, defaultValue: "User", allowNull: false },
 });
 
+const Juri = sequelize.define("juri", {
+    id: {
+        type: DataTypes.INTEGER(10),
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
+    username: { type: DataTypes.STRING, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: false },
+    password: { type: DataTypes.STRING, allowNull: false },
+    role: { type: DataTypes.STRING, defaultValue: "User", allowNull: false },
+});
+
 const User = sequelize.define("user", {
     id: {
         type: DataTypes.INTEGER(10),
@@ -21,7 +34,6 @@ const User = sequelize.define("user", {
         allowNull: false,
     },
     username: { type: DataTypes.STRING, allowNull: false },
-    surname: { type: DataTypes.STRING, allowNull: true },
     email: { type: DataTypes.STRING, allowNull: true },
     profile_img: { type: DataTypes.STRING, allowNull: true },
     phone_num: { type: DataTypes.STRING, allowNull: false },
@@ -59,8 +71,11 @@ const Document = sequelize.define("document", {
         primaryKey: true,
         allowNull: false,
     },
+    name: { type: DataTypes.STRING, allowNull: false },
+    phone_num: { type: DataTypes.STRING, allowNull: false },
     title: { type: DataTypes.STRING, allowNull: false },
-    description: { type: DataTypes.TEXT, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false }, 
+    project_img: { type: DataTypes.STRING, allowNull: true },
     passport_pdf: { type: DataTypes.STRING, allowNull: false },
     checked: { type: DataTypes.TINYINT, allowNull: false, defaultValue: "0" },
 });
@@ -130,5 +145,6 @@ module.exports = {
     User,
     Category,
     Contact,
-    Document
+    Document,
+    Juri
 };

@@ -33,7 +33,7 @@ router.get("/edit/:userId", async (req, res) => {
     })
 })
 
-router.get("/edit/:userId", imageUpload.upload.single("profile_img"), async (req, res) => {
+router.post("/edit/:userId", imageUpload.upload.single("profile_img"), async (req, res) => {
     let img = req.body.profile_img;
     if (req.file) {
         fs.unlink("./public/img/users/" + img, err => {
