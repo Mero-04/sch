@@ -22,6 +22,7 @@ router.post("/create", FileUpload.upload.single("passport_pdf"), validateToken, 
     await Document.create({
         username: req.body.username,
         email: req.body.email,
+        phone_num: req.body.phone_num,
         title: req.body.title,
         description: req.body.description,
         passport_pdf: req.file.filename,

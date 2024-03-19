@@ -19,6 +19,7 @@ const AddressRouter = require("./routes/address.router")
 const CategoryRouter = require("./routes/category.router")
 const UserRouter = require("./routes/user.router")
 const ContactRouter = require("./routes/contact.router")
+const DocumentRouter = require("./routes/document.router")
 
 
 app.use("/api/v1/home", HomeRouter);
@@ -27,6 +28,7 @@ app.use("/api/v1/address", AddressRouter);
 app.use("/api/v1/category", CategoryRouter);
 app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/contact", ContactRouter);
+app.use("/api/v1/document", DocumentRouter);
 
 
 app.listen(port, () => {

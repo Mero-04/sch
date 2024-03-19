@@ -39,7 +39,7 @@ router.post("/juri/login", async (req, res) => {
                     res.json({ error: "Ulanyjynyň nomeri ýa-da açar sözi nädogry" })
                 } else {
                     res.json({
-                        token: sign({ id: juri.id, role: juri.role }, process.env.JWT_key, {
+                        token: sign({ id: juri.id, username: juri.username, role: juri.role }, process.env.JWT_key, {
                             expiresIn: '24h'
                         })
                     });
