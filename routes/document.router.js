@@ -10,7 +10,10 @@ const fs = require('fs')
 
 router.get("/", isAdmin, async (req, res) => {
     await Document.findAll({
-        include: User
+        include: {
+            model: Category, 
+            model:User
+        }
     }).then((document) => { res.json({ document: document }) })
 })
 
