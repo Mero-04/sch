@@ -1,7 +1,7 @@
 const express = require('express');
 const { isAdmin, validateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
-const { Category, Document } = require("../models/model");
+const { Category, Document, User } = require("../models/model");
 const FileUpload = require("../helpers/file-upload")
 const multer = require("multer");
 const upload = multer({ dest: "./public/img" });
@@ -9,7 +9,9 @@ const path = require("path")
 const fs = require('fs')
 
 router.get("/", isAdmin, async (req, res) => {
-    await Document.findAll().then((document) => { res.json({ document: document }) })
+    await Document.findAll({
+        include: User
+    }).then((document) => { res.json({ document: document }) })
 })
 
 /// Kategoryyalaryy cekmeli su api bilen
@@ -27,7 +29,7 @@ router.post("/create", FileUpload.upload.single("passport_pdf"), validateToken, 
         description: req.body.description,
         passport_pdf: req.file.filename,
         categoryId: req.body.categoryId,
-        userId: req.user.userId
+        userId: req.user.id
     }).then(() => {
         res.json({ success: "Hasaba alyndynyz" })
     }).catch((error) => { res.status(500).json({ error: error }) })
